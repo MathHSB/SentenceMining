@@ -18,7 +18,6 @@ namespace SentenceMining.Dtos
         [JsonProperty("note")]
         public Note Note { get; set; } = default!;
     }
-
     public class Note
     {
         [JsonProperty("deckName")]

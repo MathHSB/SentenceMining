@@ -5,10 +5,6 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentenceMining", "SentenceMining.csproj", "{9479E884-7698-4C57-B9A1-64C040887C0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentenceMining.Domain", "..\SentenceMining.Domain\SentenceMining.Domain.csproj", "{F3F7D238-EAAD-468E-97FD-5111B8B5133F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentenceMining.Application", "..\SentenceMining.Application\SentenceMining.Application.csproj", "{4B1A628C-96D3-4DA7-BAEC-22F29C7907DD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{9479E884-7698-4C57-B9A1-64C040887C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9479E884-7698-4C57-B9A1-64C040887C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9479E884-7698-4C57-B9A1-64C040887C0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3F7D238-EAAD-468E-97FD-5111B8B5133F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3F7D238-EAAD-468E-97FD-5111B8B5133F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3F7D238-EAAD-468E-97FD-5111B8B5133F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3F7D238-EAAD-468E-97FD-5111B8B5133F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B1A628C-96D3-4DA7-BAEC-22F29C7907DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B1A628C-96D3-4DA7-BAEC-22F29C7907DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B1A628C-96D3-4DA7-BAEC-22F29C7907DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B1A628C-96D3-4DA7-BAEC-22F29C7907DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
