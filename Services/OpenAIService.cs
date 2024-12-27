@@ -24,7 +24,7 @@ namespace SentenceMining.Services
                 return completion.Content[0].Text;
         }
 
-        public async Task<bool> GetAudioSentence(string front)
+        public async Task<bool> GetSentenceAudio(string front)
         {
             AudioClient client = new("tts-1", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));      
             BinaryData speech = await client.GenerateSpeechAsync(front, GeneratedSpeechVoice.Echo);

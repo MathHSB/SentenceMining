@@ -15,7 +15,7 @@ namespace SentenceMining.Services
             var sentences = GetSentenceKeys(text);
 
             var audioTasks = sentences
-                .Select(sentence => _openAIService.GetAudioSentence(sentence.Key));
+                .Select(sentence => _openAIService.GetSentenceAudio(sentence.Key));
 
             await Task.WhenAll(audioTasks);
         }
