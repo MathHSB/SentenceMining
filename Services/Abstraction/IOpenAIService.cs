@@ -2,5 +2,6 @@
 {
     public interface IOpenAIService
     {
+        Task<string> GetSentencesMening(StreamReader reader);
     }
 }

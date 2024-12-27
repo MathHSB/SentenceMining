@@ -1,6 +1,7 @@
 ﻿namespace SentenceMining.Services.Abstraction
 {
-    public class IAnkiNoteService
+    public interface IAnkiNoteService
     {
+        Task AddNote(IFormFile file);
     }
 }
