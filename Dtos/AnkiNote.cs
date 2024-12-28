@@ -2,13 +2,13 @@
 
 namespace SentenceMining.Dtos
 {
-    public class AnkiCard
+    public class AnkiNote
     {
         [JsonProperty("action")]
-        public string Action { get; set; } = default!;
+        public string Action { get;} = "addNote";
 
         [JsonProperty("version")]
-        public int Version { get; set; }
+        public int Version { get;} = 6;
 
         [JsonProperty("params")]
         public Params Params { get; set; } = default!;

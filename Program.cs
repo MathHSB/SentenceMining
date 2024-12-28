@@ -1,4 +1,7 @@
 using Carter;
+using Refit;
+using SentenceMining.Infra.Abstraction;
+using SentenceMining.Infra.Http;
 using SentenceMining.Services;
 using SentenceMining.Services.Abstraction;
 
@@ -12,8 +15,21 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCarter();
 
+
+builder.Services
+    .AddRefitClient<IAnkiConnectApi>(new RefitSettings(new NewtonsoftJsonContentSerializer()))
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:8765"))
+     .ConfigurePrimaryHttpMessageHandler(() =>
+     {
+         return new ForceBufferingHandler(new HttpClientHandler
+         {
+             AllowAutoRedirect = false
+         });
+     });
+
 builder.Services.AddScoped<IAnkiNoteService, AnkiNoteService>();
 builder.Services.AddScoped<IOpenAIService, OpenAIService>();
+
 
 var app = builder.Build();
 

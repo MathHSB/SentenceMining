@@ -1,11 +1,19 @@
-﻿using SentenceMining.Services.Abstraction;
+﻿using SentenceMining.Infra.Abstraction;
+using SentenceMining.Services.Abstraction;
 using System.Text.RegularExpressions;
 namespace SentenceMining.Services
 {
     public sealed class AnkiNoteService : IAnkiNoteService
     {
         private readonly IOpenAIService _openAIService;
-        public AnkiNoteService(IOpenAIService openAIService) => _openAIService = openAIService;     
+        private readonly IAnkiConnectApi _ankiConnectApi;
+
+        public AnkiNoteService(IOpenAIService openAIService, 
+            IAnkiConnectApi ankiConnectApi )
+        {
+           _openAIService = openAIService;
+            _ankiConnectApi = ankiConnectApi;
+        } 
 
         public async Task AddNote(IFormFile file)
         {
@@ -14,10 +22,10 @@ namespace SentenceMining.Services
             var text = await _openAIService.GetSentencesMening(reader);
             var sentences = GetSentenceKeys(text);
 
-            var audioTasks = sentences
+            var sentencesAudio = sentences
                 .Select(sentence => _openAIService.GetSentenceAudio(sentence.Key));
 
-            await Task.WhenAll(audioTasks);
+            await Task.WhenAll(sentencesAudio);
         }
 
         private Dictionary<string, string> GetSentenceKeys(string text)
