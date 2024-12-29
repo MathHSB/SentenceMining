@@ -26,15 +26,19 @@ namespace SentenceMining.Services
             return completion.Content[0].Text;
         }
 
-        public async Task<FileStream> GetSentenceAudio(string front)
+        public async Task<(FileStream, string)> GetSentenceAudio(string front)
         {
+            Directory.CreateDirectory("Audio");
+            var audioName = $"{Guid.NewGuid()}.mp3";
+            var filePath = Path.Combine("Audio", audioName);
+
             AudioClient client = new("tts-1", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));      
             BinaryData speech = await client.GenerateSpeechAsync(front, GeneratedSpeechVoice.Echo);
 
-            using FileStream stream = File.OpenWrite($"{Guid.NewGuid()}.mp3");
-            //speech.ToStream().CopyTo(stream);
+            using FileStream stream = File.OpenWrite(filePath);
+            speech.ToStream().CopyTo(stream);
 
-            return stream;
+            return (stream, audioName);
         }
     }
 }

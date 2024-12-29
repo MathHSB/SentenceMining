@@ -3,6 +3,6 @@
     public interface IOpenAIService
     {
         Task<string> GetSentencesMening(StreamReader reader);
-        Task<FileStream> GetSentenceAudio(string front);
+        Task<(FileStream stream, string name)> GetSentenceAudio(string front);
     }
 }
