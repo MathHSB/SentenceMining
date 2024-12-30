@@ -1,0 +1,20 @@
+﻿version: "3.9"
+
+services:
+    sentence-mining.api:
+        image: ${DOCKER_REGISTRY-}sentencemining
+        container_name: "sentencemining.api"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "5000:5000"
+            - "5001:5001"
+
+    sentence-mining.blob-storage:
+        image: mcr.microsoft.com/azure-storage/azurite:latest
+        container_name: "sentencemining.blob-storage"
+        hostname: azurite
+        ports:
+            - "10000:10000"
+        command: "azurite-blob --blobHost 0.0.0.0"
