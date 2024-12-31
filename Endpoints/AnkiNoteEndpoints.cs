@@ -10,7 +10,7 @@ namespace SentenceMining.Endpoints
             app.MapPost("/createNote", async (
                 IAnkiNoteService ankiNoteService, 
                 IFormFile file) =>
-            {              
+            {
                 await ankiNoteService.AddNote(file);
                 return Results.Created("/addNote", new { Message = "Hello Word" });
             })

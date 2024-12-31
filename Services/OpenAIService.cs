@@ -18,15 +18,16 @@ namespace SentenceMining.Services
                 + "Back: [Meaning or meanings if exists of the unknown word or phrase in parentheses]"
                 + "\r\nHere’s the list of words:\r\n";
 
-        public async Task<string> GetSentencesMening(StreamReader reader)
+        public async Task<string> GetSentencesMening(IFormFile file)
         {
+            using StreamReader fileReader = new(file.OpenReadStream());
             ChatClient client = new(model: "gpt-4o-mini", apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
-            ChatCompletion completion = client.CompleteChat($"{Prompt}{await reader.ReadToEndAsync()}");
+            ChatCompletion completion = client.CompleteChat($"{Prompt}{await fileReader.ReadToEndAsync()}");
 
             return completion.Content[0].Text;
         }
 
-        public async Task<(FileStream, string)> GetSentenceAudio(string front)
+        public async Task<(BinaryData, string)> GetSentenceAudio(string front)
         {
             Directory.CreateDirectory("Audio");
             var audioName = $"{Guid.NewGuid()}.mp3";
@@ -38,7 +39,7 @@ namespace SentenceMining.Services
             using FileStream stream = File.OpenWrite(filePath);
             speech.ToStream().CopyTo(stream);
 
-            return (stream, audioName);
+            return (speech, audioName);
         }
     }
 }

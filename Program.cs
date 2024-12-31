@@ -1,7 +1,9 @@
+using Azure.Storage.Blobs;
 using Carter;
 using Refit;
 using SentenceMining.Infra.Abstraction;
 using SentenceMining.Infra.Http;
+using SentenceMining.Infra.Storage;
 using SentenceMining.Services;
 using SentenceMining.Services.Abstraction;
 
@@ -29,7 +31,8 @@ builder.Services
 
 builder.Services.AddScoped<IAnkiNoteService, AnkiNoteService>();
 builder.Services.AddScoped<IOpenAIService, OpenAIService>();
-
+builder.Services.AddSingleton<IBlobService, BlobService>();
+builder.Services.AddSingleton(new BlobServiceClient(builder.Configuration.GetConnectionString("BlobStorage")));
 
 var app = builder.Build();
 
