@@ -28,7 +28,6 @@ namespace SentenceMining.Services
         {
             try
             {
-                throw new HttpRequestException("Erro teste");
                 using StreamReader fileReader = new(file.OpenReadStream());
                 ChatClient client = new(model: "gpt-4o-mini", apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
                 ChatCompletion completion = client.CompleteChat($"{Prompt}{await fileReader.ReadToEndAsync()}");
