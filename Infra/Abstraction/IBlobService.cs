@@ -2,6 +2,6 @@
 {
     public interface IBlobService
     {
-        Task UploadAsync(string contentType, BinaryData audioBinary, CancellationToken cancellationToken = default);
+        Task UploadAsync(string contentType, BinaryData audioBinary, string audioName, CancellationToken cancellationToken = default);
     }
 }

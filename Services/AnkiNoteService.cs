@@ -11,19 +11,22 @@ namespace SentenceMining.Services
         private readonly IOpenAIService _openAIService;
         private readonly IAnkiConnectApi _ankiConnectApi;
         private readonly IBlobService _blobService;
+        private readonly ILogger<AnkiNoteService> _logger;
 
         public AnkiNoteService(IOpenAIService openAIService, 
             IAnkiConnectApi ankiConnectApi,
-            IBlobService blobService)
+            IBlobService blobService,
+            ILogger<AnkiNoteService> logger)
         {
             _openAIService = openAIService;
             _ankiConnectApi = ankiConnectApi;
             _blobService = blobService;
+            _logger = logger;
         } 
 
         public async Task AddNote(IFormFile file)
         {
-            var sentencesMeaning = await _openAIService.GetSentencesMening(file);
+            var sentencesMeaning = await _openAIService.GetSentencesMeaning(file);
 
             var sentencesFormated = GetSentencesFormated(sentencesMeaning);
             var sentencesAudio = await GetSentencesAudio(sentencesFormated);
@@ -47,16 +50,17 @@ namespace SentenceMining.Services
             return sentencesAudio;
         }
 
-        private async Task UploadSentenceAudio(IEnumerable<SentenceAudio> sentencesAudio)
+        private async Task UploadSentenceAudio(
+            IEnumerable<SentenceAudio> sentencesAudio)
         {
             await Task.WhenAll(sentencesAudio.Select(async sentenceAudio =>
             {
-                await _blobService.UploadAsync("audio/mpeg", sentenceAudio.AudioBinary);
-            }));
+                await _blobService.UploadAsync("audio/mpeg", sentenceAudio.AudioBinary, sentenceAudio.Name);
+            }));      
         }
 
         private async Task<List<ApiResponse<AnkiNoteResponse>>> AddNoteInBatches(
-            List<AnkiNote> ankiNotes)
+            List<AnkiNoteRequest> ankiNotes)
         {
             try
             {
@@ -74,12 +78,11 @@ namespace SentenceMining.Services
 
                 return responses;
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
-
-                throw ex;
+                _logger.LogError($"HTTP error: {ex.Message}");
+                throw;
             }
-           
         }
 
         private Dictionary<string, string> GetSentencesFormated(string text)
@@ -100,9 +103,10 @@ namespace SentenceMining.Services
              return dictionary;
         }
 
-        private List<AnkiNote> CreateAnkiNotes(IEnumerable<SentenceAudio> sentencesAudio)
+        private List<AnkiNoteRequest> CreateAnkiNotes(
+            IEnumerable<SentenceAudio> sentencesAudio)
         {
-            var ankiNotes = sentencesAudio.Select(result => new AnkiNote
+            var ankiNotes = sentencesAudio.Select(result => new AnkiNoteRequest
             {
                 Params = new Params
                 {
@@ -119,7 +123,7 @@ namespace SentenceMining.Services
                         {
                             new Audio
                             {
-                                Url = BlobHelper.GenerateBlobAudioPath(result.Name),
+                                Url = BlobHelper.GetBlobAudioPath(result.Name),
                                 Filename = result.Name,
                                 Fields = new List<string> { "Front" }
                             }

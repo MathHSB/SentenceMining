@@ -2,7 +2,7 @@
 
 namespace SentenceMining.Dtos
 {
-    public class AnkiNote
+    public class AnkiNoteRequest
     {
         [JsonProperty("action")]
         public string Action { get;} = "addNote";

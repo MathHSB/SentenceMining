@@ -2,7 +2,7 @@
 {
     public interface IOpenAIService
     {
-        Task<string> GetSentencesMening(IFormFile reader);
+        Task<string> GetSentencesMeaning(IFormFile reader);
 
         Task<(BinaryData audioBinary, string name)> GetSentenceAudio(string front);
     }
