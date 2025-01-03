@@ -4,7 +4,7 @@
     {
         public static string GetBlobAudioPath(string fileName)
         {
-            var blobPath = Environment.GetEnvironmentVariable("BlobAudioPath") ?? throw new InvalidOperationException("BlobAudioPath environment variable is not set.");
+            var blobPath = Environment.GetEnvironmentVariable("BLOB_AUDIO_PATH") ?? throw new InvalidOperationException("BlobAudioPath environment variable is not set.");
             return $"{blobPath}{fileName}";
         }
     }

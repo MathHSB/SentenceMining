@@ -4,12 +4,16 @@ services:
     sentence-mining.api:
         image: ${DOCKER_REGISTRY-}sentencemining
         container_name: "sentencemining.api"
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+          - OPENAI_API_KEY=${OPENAI_API_KEY}
+          - BlobAudioPath=http://127.0.0.1:10000/devstoreaccount1/sentences-audio/
         build:
             context: .
             dockerfile: Dockerfile
         ports:
-            - "5000:5000"
-            - "5001:5001"
+            - "8080:8080"
+            - "8081:8081"
 
     sentence-mining.blob-storage:
         image: mcr.microsoft.com/azure-storage/azurite:latest

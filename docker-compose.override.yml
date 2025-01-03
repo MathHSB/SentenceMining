@@ -3,8 +3,8 @@ services:
   sentence-mining.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_ENVIRONMENT_HTTP_PORTS=5000
-      - ASPNETCORE_ENVIRONMENT_HTTPS_PORTS=5001
+      - ASPNETCORE_ENVIRONMENT_HTTP_PORTS=8080
+      - ASPNETCORE_ENVIRONMENT_HTTPS_PORTS=8081
     ports:
-       - "5000:5000"
-       - "5001:5001"
+       - "8080:8080"
+       - "8081:8081"

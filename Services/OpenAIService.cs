@@ -7,22 +7,23 @@ namespace SentenceMining.Services
     public sealed class OpenAIService : IOpenAIService
     {
         private readonly ILogger<OpenAIService> _logger;
-        public OpenAIService(ILogger<OpenAIService> logger)
-        {
-            _logger = logger;
-        }
+
+        public OpenAIService(ILogger<OpenAIService> logger) => _logger = logger;
         
-        private const string Prompt = "I want sentences where I know the meaning of all the words except for one (N+1). "
-                + "The unknown word or phrase should be used in the context of the simple/intermediate sentence. "
-                + "Below the sentence, provide the meaning of the unknown word or phrase in the exact Front/Back format like this:"
-                + "\r\n\r\nExample format for output:\r\n" 
-                +"Front: Desperately, she went on to defend her son from all dangers."
-                + "\r\nBack: (Continuou/prosseguiu.)\r\n\r\nWhat you should do:"
-                + "\r\nI will provide you with a list of words or phrases. For each word, create simple/intermediate sentences using the N+1 technique."
-                + "Write the output in the following format:\r\n\r\n"
-                + "Front: [Sentence containing the unknown word(in bold using tag <b> ) or phrase]\r\n"
-                + "Back: [Meaning or meanings if exists of the unknown word or phrase in parentheses]"
-                + "\r\nHere’s the list of words:\r\n";
+        private const string Prompt = "I want you to create sentences using the N+1 technique. This means:" +
+            "\r\n- Each sentence should contain one unknown word or phrase (bold the word or phrase using `<b>` tags without asterisks)." +
+            "\r\n- I should know the meaning of all the other words in the sentence except the bolded '<b>' tag one." +
+            "\r\n\r\n" +"Provide the meaning of the unknown word or phrase immediately below the sentence, using the exact Front/Back format as follows:" +
+            "\r\n\r\nExample format for output:\r\nFront: Desperately, she went on to defend her son from all dangers." +
+            "\r\nBack: (Continuou/prosseguiu.)\r\n\r\nYour task:\r\n1. I will provide a list of words or phrases." +
+            "\r\n2. For each word or phrase in the list:\r\n   - Create a simple/intermediate sentence using the N+1 technique." +
+            "\r\n   - Use the unknown word or phrase in the context of the sentence.\r\n   - Write the sentence in the format:" +
+            "\r\n     Front: [Sentence containing the unknown word or phrase, with the unknown part in bold using `<b>` tags without asterisks.]" +
+            "\r\n     Back: [Meaning or meanings of the unknown word or phrase in parentheses.]\r\n\r\nImportant instructions:" +
+            "\r\n- Do not alter or split the input words or phrases; process them exactly as they are provided." +
+            "\r\n- Do not modify the meaning of the words or phrases.\r\n- Ensure the sentence is written in a simple and clear way." 
+            + "- If the input contains multiple words (e.g., \"makes actually\"), treat them as a single, inseparable unit.\n"+
+            "\r\n- Separate each Front/Back pair with a blank line for readability.\r\n\r\nHere’s the list of words or phrases:\r\n";
 
         public async Task<string> GetSentencesMeaning(IFormFile file)
         {

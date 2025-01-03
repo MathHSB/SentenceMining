@@ -26,6 +26,11 @@ namespace SentenceMining.Services
 
         public async Task AddNote(IFormFile file)
         {
+            if (!file.FileName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) || file.Length == 0)
+            {
+                _logger.LogError("Invalid file format or empty file.");
+                throw new InvalidOperationException("Invalid file format or empty file.");
+            }
             var sentencesMeaning = await _openAIService.GetSentencesMeaning(file);
 
             var sentencesFormated = GetSentencesFormated(sentencesMeaning);
@@ -59,24 +64,21 @@ namespace SentenceMining.Services
             }));      
         }
 
-        private async Task<List<ApiResponse<AnkiNoteResponse>>> AddNoteInBatches(
+        private async Task AddNoteInBatches(
             List<AnkiNoteRequest> ankiNotes)
         {
             try
             {
-                var responses = new List<ApiResponse<AnkiNoteResponse>>();
-                var batchSize = 10;
-
+                var batchSize = 5;
                 var numberOfBatches = (int)Math.Ceiling((double)ankiNotes.Count / batchSize);
 
                 for (int i = 0; i < numberOfBatches; i++)
                 {
                     var currentNotes = ankiNotes.Skip(i * batchSize).Take(batchSize);
                     var tasks = currentNotes.Select(note => _ankiConnectApi.CreateNote(note));
-                    responses.AddRange(await Task.WhenAll(tasks));
+                    await Task.WhenAll(tasks);
                 }
 
-                return responses;
             }
             catch (HttpRequestException ex)
             {
@@ -112,7 +114,7 @@ namespace SentenceMining.Services
                 {
                     Note = new Note
                     {
-                        DeckName = "Default",
+                        DeckName = "English",
                         ModelName = "Basic",
                         Fields = new Fields
                         {

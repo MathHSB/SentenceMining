@@ -12,7 +12,7 @@ namespace SentenceMining.Endpoints
                 IFormFile file) =>
             {
                 await ankiNoteService.AddNote(file);
-                return Results.Created("/addNote", new { Message = "Hello Word" });
+                return Results.Created("/addNote", new { Message = "Notes created successfully"});
             })
             .WithName("AddNoteEndpoint")
             .DisableAntiforgery();
