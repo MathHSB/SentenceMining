@@ -6,8 +6,8 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "OPENAI_API_KEY": "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",
-        "BLOB_AUDIO_PATH": "http://127.0.0.1:10000/devstoreaccount1/sentences-audio/"
+        "OPENAI_API_KEY": "",
+        "BLOB_AUDIO_PATH": ""
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5000"
